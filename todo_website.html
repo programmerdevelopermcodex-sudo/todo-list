@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تودو ليست - موقع بسيط</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 10px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .card {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #fff;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .done {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+    .actions button {
+      margin-left: 5px;
+      padding: 6px 10px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <h1>تودو ليست (موقع فقط)</h1>
+
+  <div class="card">
+    <input id="todoInput" placeholder="أضف مهمة جديدة" />
+    <button onclick="addTodo()">إضافة</button>
+  </div>
+
+  <ul id="todoList"></ul>
+
+  <script>
+    let todos = [];
+
+    function renderTodos() {
+      const list = document.getElementById("todoList");
+      list.innerHTML = "";
+
+      todos.forEach((todo, index) => {
+        const li = document.createElement("li");
+
+        const text = document.createElement("span");
+        text.textContent = todo.text;
+        if (todo.done) text.classList.add("done");
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const toggleBtn = document.createElement("button");
+        toggleBtn.textContent = todo.done ? "إلغاء" : "تم";
+        toggleBtn.onclick = () => toggleTodo(index);
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "حذف";
+        deleteBtn.onclick = () => deleteTodo(index);
+
+        actions.appendChild(toggleBtn);
+        actions.appendChild(deleteBtn);
+
+        li.appendChild(text);
+        li.appendChild(actions);
+
+        list.appendChild(li);
+      });
+    }
+
+    function addTodo() {
+      const input = document.getElementById("todoInput");
+      const text = input.value.trim();
+      if (text === "") return;
+      todos.push({ text, done: false });
+      input.value = "";
+      renderTodos();
+    }
+
+    function toggleTodo(i) {
+      todos[i].done = !todos[i].done;
+      renderTodos();
+    }
+
+    function deleteTodo(i) {
+      todos.splice(i, 1);
+      renderTodos();
+    }
+  </script>
+</body>
+</html>
